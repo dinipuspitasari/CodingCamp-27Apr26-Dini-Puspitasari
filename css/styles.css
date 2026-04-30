@@ -1,0 +1,608 @@
+/* css/styles.css — Expense & Budget Visualizer styles */
+
+/* ============================================================
+   0. RESET & BOX MODEL (task 6.4)
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* ============================================================
+   1. CUSTOM PROPERTIES
+   ============================================================ */
+:root {
+  /* Colours */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-danger: #dc2626;
+  --color-danger-hover: #b91c1c;
+  --color-secondary: #6b7280;
+  --color-secondary-hover: #4b5563;
+
+  --color-bg: #f3f4f6;
+  --color-surface: #ffffff;
+  --color-header-bg: #1e293b;
+  --color-header-text: #f8fafc;
+  --color-border: #e5e7eb;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+
+  --color-alert-bg: #fef2f2;
+  --color-alert-border: #fca5a5;
+  --color-alert-text: #dc2626;
+
+  --color-badge-bg: #e0e7ff;
+  --color-badge-text: #3730a3;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+
+  /* Touch target minimum (task 6.3) */
+  --touch-min: 44px;
+}
+
+/* ============================================================
+   2. BASE / TYPOGRAPHY
+   ============================================================ */
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  overflow-x: hidden; /* task 6.4 — prevent horizontal scroll */
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 var(--space-md);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+p {
+  margin: 0 0 var(--space-sm);
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ============================================================
+   3. UTILITY CLASSES
+   ============================================================ */
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   4. ERROR BANNER
+   ============================================================ */
+#error-banner {
+  background-color: var(--color-alert-bg);
+  border-bottom: 2px solid var(--color-alert-border);
+  color: var(--color-alert-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  text-align: center;
+  width: 100%;
+}
+
+/* ============================================================
+   5. HEADER
+   ============================================================ */
+header {
+  background-color: var(--color-header-bg);
+  color: var(--color-header-text);
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+  color: var(--color-header-text);
+}
+
+.balance-label {
+  font-size: 1rem;
+  margin: 0;
+  color: #cbd5e1;
+}
+
+#balance-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+/* ============================================================
+   6. MAIN LAYOUT — mobile-first single column (task 6.1)
+   ============================================================ */
+main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ============================================================
+   7. CARD / SECTION STYLES
+   ============================================================ */
+.form-section,
+.category-section,
+.budget-section,
+.list-section,
+.chart-section,
+.view-toggle,
+#monthly-summary {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-lg) var(--space-md);
+  width: 100%;
+}
+
+/* ============================================================
+   8. FORM FIELDS — full-width, mobile-first (task 6.1)
+   ============================================================ */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 var(--space-sm);
+  height: var(--touch-min); /* task 6.3 — 44 px touch target */
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* ============================================================
+   9. BUTTONS — full-width on mobile, touch-target compliant (tasks 6.1, 6.3)
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 var(--space-md);
+  height: var(--touch-min); /* task 6.3 — 44 px touch target */
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger-hover);
+}
+
+/* Inline delete buttons inside list items should be auto-width */
+.btn-delete {
+  width: auto;
+  padding: 0 var(--space-sm);
+  font-size: 0.8125rem;
+  background-color: var(--color-danger);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.btn-delete:hover {
+  background-color: var(--color-danger-hover);
+}
+
+/* Budget panel save/clear buttons */
+.btn-save,
+.btn-clear {
+  width: auto;
+  padding: 0 var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.btn-save {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.btn-save:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-clear {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+}
+
+.btn-clear:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+/* ============================================================
+   10. FIELD ERROR SPANS (task 6.1)
+   ============================================================ */
+.field-error {
+  color: var(--color-danger);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  min-height: 1.2em; /* reserve space to avoid layout shift */
+}
+
+/* ============================================================
+   11. TRANSACTION LIST (task 6.1 — scrollable)
+   ============================================================ */
+#transaction-list {
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+#transaction-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-xs);
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+#transaction-list li:last-child {
+  border-bottom: none;
+}
+
+.transaction-name {
+  flex: 1 1 auto;
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Category badge */
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-sm);
+  background-color: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Alert indicator — over-budget warning */
+.alert-indicator {
+  color: var(--color-alert-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Over-budget list item */
+.over-budget {
+  border-left: 3px solid var(--color-danger);
+  background-color: var(--color-alert-bg);
+  padding-left: calc(var(--space-xs) + 3px);
+}
+
+/* Empty state */
+.empty-state {
+  color: var(--color-text-muted);
+  font-style: italic;
+  font-size: 0.9375rem;
+  padding: var(--space-md) 0;
+  text-align: center;
+}
+
+/* ============================================================
+   12. CHART SECTION
+   ============================================================ */
+.chart-section canvas {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.chart-fallback {
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-md) 0;
+}
+
+/* ============================================================
+   13. BUDGET PANEL
+   ============================================================ */
+.budget-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.budget-row:last-child {
+  border-bottom: none;
+}
+
+.budget-category-label {
+  flex: 1 1 auto;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.budget-row input[type="number"] {
+  width: 100px;
+  flex: 0 0 100px;
+}
+
+/* ============================================================
+   14. VIEW TOGGLE
+   ============================================================ */
+.view-toggle {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  box-shadow: none;
+}
+
+.view-toggle .btn {
+  width: auto;
+  min-width: 200px;
+}
+
+/* ============================================================
+   15. MONTHLY SUMMARY
+   ============================================================ */
+.month-group {
+  margin-bottom: var(--space-lg);
+}
+
+.month-group:last-child {
+  margin-bottom: 0;
+}
+
+.month-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  color: var(--color-text);
+}
+
+.month-total {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.month-category-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  font-size: 0.9375rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.month-category-row:last-child {
+  border-bottom: none;
+}
+
+/* ============================================================
+   16. RESPONSIVE — TABLET ≥ 768px (task 6.2)
+   ============================================================ */
+@media (min-width: 768px) {
+  header {
+    padding: var(--space-xl) var(--space-lg);
+    text-align: left;
+  }
+
+  header h1 {
+    font-size: 1.625rem;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "form    chart"
+      "cats    chart"
+      "budget  chart"
+      "list    list"
+      "toggle  toggle"
+      "summary summary";
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    align-items: start;
+  }
+
+  .form-section {
+    grid-area: form;
+  }
+  .category-section {
+    grid-area: cats;
+  }
+  .budget-section {
+    grid-area: budget;
+  }
+  .list-section {
+    grid-area: list;
+  }
+  .chart-section {
+    grid-area: chart;
+  }
+  .view-toggle {
+    grid-area: toggle;
+  }
+  #monthly-summary {
+    grid-area: summary;
+  }
+
+  /* Buttons can be auto-width on wider screens */
+  .btn {
+    width: auto;
+  }
+
+  /* Keep form submit / category add buttons full-width within their card */
+  .form-section .btn,
+  .category-section .btn {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   17. RESPONSIVE — DESKTOP ≥ 1024px (task 6.2)
+   ============================================================ */
+@media (min-width: 1024px) {
+  header {
+    padding: var(--space-xl) var(--space-xl);
+  }
+
+  header h1 {
+    font-size: 1.875rem;
+  }
+
+  main {
+    grid-template-columns: 420px 1fr;
+    gap: var(--space-xl);
+    padding: var(--space-xl);
+  }
+
+  .form-section,
+  .category-section,
+  .budget-section,
+  .list-section,
+  .chart-section,
+  #monthly-summary {
+    padding: var(--space-xl);
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  #balance-display {
+    font-size: 1.875rem;
+  }
+}

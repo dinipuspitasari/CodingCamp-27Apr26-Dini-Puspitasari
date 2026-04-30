@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense &amp; Budget Visualizer</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Error banner (hidden by default) -->
+    <div id="error-banner" class="hidden" role="alert" aria-live="polite"></div>
+
+    <header>
+      <h1>Expense &amp; Budget Visualizer</h1>
+      <p class="balance-label">
+        Total Balance: <span id="balance-display">Rp 0</span>
+      </p>
+    </header>
+
+    <main>
+      <!-- Transaction Input Form -->
+      <section class="form-section" aria-labelledby="form-heading">
+        <h2 id="form-heading">Add Transaction</h2>
+        <form id="transaction-form" novalidate>
+          <div class="field-group">
+            <label for="input-name">Item Name</label>
+            <input
+              type="text"
+              id="input-name"
+              name="name"
+              placeholder="e.g. Coffee"
+              autocomplete="off" />
+            <span class="field-error" id="error-name" aria-live="polite"></span>
+          </div>
+
+          <div class="field-group">
+            <label for="input-amount">Jumlah (Rp)</label>
+            <input
+              type="number"
+              id="input-amount"
+              name="amount"
+              placeholder="0"
+              min="0.01"
+              step="0.01" />
+            <span
+              class="field-error"
+              id="error-amount"
+              aria-live="polite"></span>
+          </div>
+
+          <div class="field-group">
+            <label for="input-category">Category</label>
+            <select id="input-category" name="category">
+              <!-- Populated dynamically by renderCategorySelector() -->
+            </select>
+            <span
+              class="field-error"
+              id="error-category"
+              aria-live="polite"></span>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Add Transaction</button>
+        </form>
+      </section>
+
+      <!-- Custom Category Manager -->
+      <section class="category-section" aria-labelledby="category-heading">
+        <h2 id="category-heading">Manage Categories</h2>
+        <form id="category-form" novalidate>
+          <div class="field-group">
+            <label for="input-new-category">New Category</label>
+            <input
+              type="text"
+              id="input-new-category"
+              name="new-category"
+              placeholder="e.g. Healthcare"
+              autocomplete="off" />
+            <span
+              class="field-error"
+              id="error-new-category"
+              aria-live="polite"></span>
+          </div>
+          <button type="submit" class="btn btn-secondary">Add Category</button>
+        </form>
+      </section>
+
+      <!-- Budget Limit Controls -->
+      <section class="budget-section" aria-labelledby="budget-heading">
+        <h2 id="budget-heading">Budget Limits</h2>
+        <div id="budget-panel">
+          <!-- Populated dynamically by renderBudgetPanel() -->
+        </div>
+      </section>
+
+      <!-- Transaction List -->
+      <section class="list-section" aria-labelledby="list-heading">
+        <h2 id="list-heading">Transactions</h2>
+        <ul id="transaction-list" aria-label="Transaction list">
+          <!-- Populated dynamically by renderTransactionList() -->
+        </ul>
+      </section>
+
+      <!-- Spending Chart -->
+      <section class="chart-section" aria-labelledby="chart-heading">
+        <h2 id="chart-heading">Spending by Category</h2>
+        <canvas
+          id="spending-chart"
+          aria-label="Spending pie chart"
+          role="img"></canvas>
+      </section>
+
+      <!-- Navigation Control -->
+      <div class="view-toggle">
+        <button id="toggle-view" class="btn btn-secondary" type="button">
+          View Monthly Summary
+        </button>
+      </div>
+
+      <!-- Monthly Summary (hidden by default) -->
+      <section
+        id="monthly-summary"
+        class="hidden"
+        aria-labelledby="summary-heading">
+        <h2 id="summary-heading">Monthly Summary</h2>
+        <!-- Populated dynamically by renderMonthlySummary() -->
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js" defer></script>
+  </body>
+</html>
